@@ -10,6 +10,19 @@ class PermissionPage extends StatefulWidget {
 }
 
 class _PermissionPageState extends State<PermissionPage> {
+
+  final _flutterP2pConnectionPlugin = FlutterP2pConnection();
+
+  void snack(String msg) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text(
+          msg,
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +45,7 @@ class _PermissionPageState extends State<PermissionPage> {
                 },
                 child: const Text("Xotiradan foydalanish")),
             FilledButton(
-                onPressed: () {
+                onPressed: () async {
                   // enable location
                   FlutterP2pConnection().enableLocationServices();
                   // check if location is enabled
@@ -41,6 +54,8 @@ class _PermissionPageState extends State<PermissionPage> {
                   FlutterP2pConnection().askLocationPermission();
                   // check if location permission is granted
                   FlutterP2pConnection().checkLocationPermission();
+                  String? ip = await _flutterP2pConnectionPlugin.getIPAddress();
+                  snack("ip: $ip");
                 },
                 child: const Text("Joylashuvni aniqlash")),
             FilledButton(

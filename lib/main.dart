@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:localshare/pages/permission_page.dart';
 
+import 'core/config/string.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Local share',
+      title: AppString.name,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
+import 'package:localshare/core/config/color.dart';
 import 'package:localshare/pages/home_page.dart';
+import '../core/config/string.dart';
 
 class PermissionPage extends StatefulWidget {
   const PermissionPage({super.key});
@@ -26,15 +28,20 @@ class _PermissionPageState extends State<PermissionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColor.primaryBackgroundColor,
+        title: Text(AppString.persmissionText,
+        style: TextStyle(color: AppColor.primaryColor),),
+      ),
       body: SizedBox(
         width: double.maxFinite,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text("Ilovadan to'liq ishlashi uchun kerak bo'ladigan ruxsatlar.",style: TextStyle(fontSize: 25,color: Colors.blueAccent),softWrap: true,textAlign: TextAlign.center,),
+             Padding(
+              padding:const EdgeInsets.all(8.0),
+              child: Text(AppString.appUsePermissionText,style: TextStyle(fontSize: 25,color: AppColor.secondaryColor),softWrap: true,textAlign: TextAlign.center,),
             ),
             FilledButton(
                 onPressed: () {
@@ -43,7 +50,7 @@ class _PermissionPageState extends State<PermissionPage> {
                   // check if storage permission is granted
                   FlutterP2pConnection().checkStoragePermission();
                 },
-                child: const Text("Xotiradan foydalanish")),
+                child:  Text(AppString.useMemory)),
             FilledButton(
                 onPressed: () async {
                   // enable location
@@ -55,9 +62,9 @@ class _PermissionPageState extends State<PermissionPage> {
                   // check if location permission is granted
                   FlutterP2pConnection().checkLocationPermission();
                   String? ip = await _flutterP2pConnectionPlugin.getIPAddress();
-                  snack("ip: $ip");
+                  snack("${AppString.ip} $ip");
                 },
-                child: const Text("Joylashuvni aniqlash")),
+                child:  Text(AppString.findLocation)),
             FilledButton(
                 onPressed: () {
                   // enable wifi
@@ -65,21 +72,21 @@ class _PermissionPageState extends State<PermissionPage> {
                   // check if wifi is enabled
                   FlutterP2pConnection().checkWifiEnabled();
                 },
-                child: const Text("Wifidan foydalanish")),
+                child:  Text(AppString.useWifi)),
 
             const SizedBox(height: 40,),
 
             MaterialButton(
               minWidth: 80,
               height: 60,
-              color: Colors.blueAccent,
+              color: AppColor.secondaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>const HomePage()));
               },
-            child: const Text("Tekshirish",style: TextStyle(color: Colors.white,fontSize: 25),),
+            child:  Text(AppString.checkPermissions,style: TextStyle(color: AppColor.primaryColor,fontSize: 25),),
             )
           ],
         ),

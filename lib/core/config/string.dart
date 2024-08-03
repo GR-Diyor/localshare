@@ -13,6 +13,6 @@ class AppString{
 
 
   // home page
-static String recieve = "Recieve";
-static String send = "Send";
+static String recieve = "Qabul qilish";
+static String send = "Jo'natish";
 }

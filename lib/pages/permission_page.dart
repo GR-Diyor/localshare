@@ -13,7 +13,6 @@ class PermissionPage extends StatefulWidget {
 
 class _PermissionPageState extends State<PermissionPage> {
 
-  final _flutterP2pConnectionPlugin = FlutterP2pConnection();
 
   void snack(String msg) async {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -28,68 +27,113 @@ class _PermissionPageState extends State<PermissionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.primaryBackgroundColor,
-        title: Text(AppString.persmissionText,
-        style: TextStyle(color: AppColor.primaryColor),),
-      ),
-      body: SizedBox(
-        width: double.maxFinite,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-             Padding(
-              padding:const EdgeInsets.all(8.0),
-              child: Text(AppString.appUsePermissionText,style: TextStyle(fontSize: 25,color: AppColor.secondaryColor),softWrap: true,textAlign: TextAlign.center,),
+
+      body: Stack(
+        children: [
+          SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height*0.2,),
+                Padding(
+                  padding:const EdgeInsets.all(8.0),
+                  child: Text(AppString.appUsePermissionText,style: TextStyle(fontSize: 23,color: AppColor.secondaryColor,fontFamily: 'GaMaamli-Regular'),softWrap: true,textAlign: TextAlign.center,),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.2,),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: MaterialButton(
+                      color: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      height: 50,
+                      onPressed: () {
+                        // request storage permission
+                        FlutterP2pConnection().askStoragePermission();
+                        // check if storage permission is granted
+                        FlutterP2pConnection().checkStoragePermission();
+                      },
+                      child:  Row(
+                        children: [
+                          const Icon(Icons.memory,color: Colors.white,),
+                          const SizedBox(width: 15,),
+                          Text(AppString.useMemory,style: const TextStyle(color: Colors.white,fontSize: 20),),
+                        ],
+                      )),
+                ),
+                const SizedBox(height: 15,),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: MaterialButton(
+                    color: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      height: 50,
+                      onPressed: () async {
+                        // enable location
+                        FlutterP2pConnection().enableLocationServices();
+                        // check if location is enabled
+                        FlutterP2pConnection().checkLocationEnabled();
+                        // request location permission
+                        FlutterP2pConnection().askLocationPermission();
+                        // check if location permission is granted
+                        FlutterP2pConnection().checkLocationPermission();
+                      },
+                      child:  Row(
+                        children: [
+                          const Icon(Icons.location_on,color: Colors.white,),
+                          const SizedBox(width: 15,),
+                          Text(AppString.findLocation,style: const TextStyle(color: Colors.white,fontSize: 18),),
+                        ],
+                      )),
+                ),
+                const SizedBox(height: 15,),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.9,
+                  child: MaterialButton(
+                      color: Colors.blue,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      height: 50,
+                      onPressed: () {
+                        // enable wifi
+                        FlutterP2pConnection().enableWifiServices();
+                        // check if wifi is enabled
+                        FlutterP2pConnection().checkWifiEnabled();
+                      },
+                      child:  Row(
+                        children: [
+                          const Icon(Icons.wifi,color: Colors.white,),
+                          const SizedBox(width: 15,),
+                          Text(AppString.useWifi,style: const TextStyle(color: Colors.white,fontSize: 18),),
+                        ],
+                      )),
+                ),
+
+                SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+
+
+              ],
             ),
-            FilledButton(
-                onPressed: () {
-                  // request storage permission
-                  FlutterP2pConnection().askStoragePermission();
-                  // check if storage permission is granted
-                  FlutterP2pConnection().checkStoragePermission();
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 40.0),
+              child: MaterialButton(
+                minWidth: 200,
+                height: 50,
+                color: AppColor.secondaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                onPressed: (){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const HomePage()));
                 },
-                child:  Text(AppString.useMemory)),
-            FilledButton(
-                onPressed: () async {
-                  // enable location
-                  FlutterP2pConnection().enableLocationServices();
-                  // check if location is enabled
-                  FlutterP2pConnection().checkLocationEnabled();
-                  // request location permission
-                  FlutterP2pConnection().askLocationPermission();
-                  // check if location permission is granted
-                  FlutterP2pConnection().checkLocationPermission();
-                  String? ip = await _flutterP2pConnectionPlugin.getIPAddress();
-                  snack("${AppString.ip} $ip");
-                },
-                child:  Text(AppString.findLocation)),
-            FilledButton(
-                onPressed: () {
-                  // enable wifi
-                  FlutterP2pConnection().enableWifiServices();
-                  // check if wifi is enabled
-                  FlutterP2pConnection().checkWifiEnabled();
-                },
-                child:  Text(AppString.useWifi)),
-
-            const SizedBox(height: 40,),
-
-            MaterialButton(
-              minWidth: 80,
-              height: 60,
-              color: AppColor.secondaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+                child:  Text(AppString.checkPermissions,style: TextStyle(color: AppColor.primaryColor,fontSize: 23),),
               ),
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const HomePage()));
-              },
-            child:  Text(AppString.checkPermissions,style: TextStyle(color: AppColor.primaryColor,fontSize: 25),),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

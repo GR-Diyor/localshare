@@ -18,6 +18,10 @@ dependencies:
   flutter_p2p_connection: ^2.0.1
   filesystem_picker: ^3.1.0
   flutter_custom_clippers: ^2.1.0
+  lottie: ^3.1.2
+  file_picker: ^8.0.6
+  get: any
+  network_info_plus: ^5.0.3
 
 dev_dependencies:
   flutter_test:
@@ -32,3 +36,11 @@ flutter:
 
   uses-material-design: true
 
+
+  assets:
+    - assets/lotties/
+
+  fonts:
+    - family: GaMaamli-Regular
+      fonts:
+        - asset: assets/fonts/GaMaamli-Regular.ttf

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:flutter_p2p_connection/flutter_p2p_connection.dart';
-import 'package:localshare/core/config/color.dart';
+import 'package:localshare/pages/reciever.dart';
+import 'package:localshare/pages/send.dart';
+import 'package:lottie/lottie.dart';
 
 import '../core/config/string.dart';
 
@@ -13,32 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  final TextEditingController msgText = TextEditingController();
-  final _flutterP2pConnectionPlugin = FlutterP2pConnection();
-  List<DiscoveredPeers> peers = [];
-  WifiP2PInfo? wifiP2PInfo;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _flutterP2pConnectionPlugin.unregister();
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      _flutterP2pConnectionPlugin.unregister();
-    } else if (state == AppLifecycleState.resumed) {
-      _flutterP2pConnectionPlugin.register();
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,80 +22,55 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         width: double.maxFinite,
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipPath(
-              clipper: MultiplePointedEdgeClipper(),
-              child: Container(
-                height: 150,
-                width: double.maxFinite,
-                color: AppColor.primaryBackgroundColor,
-              ),
-            ),
-
-            const SizedBox(height: 50,),
-      Expanded(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            SizedBox(
-              height: 200,
-              width: double.maxFinite,
-              child: Stack(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-                    children: [
-                      ClipPath(
-                        clipper: WaveClipperTwo(flip: true,reverse: true),
-                        child: Container(
-                          height: 100,
-                          width: double.maxFinite,
-                          color: AppColor.primaryBackgroundColor,
-                        ),
-                      ),
-                      ClipPath(
-                        clipper: WaveClipperTwo(),
-                        child: Container(
-                          height: 100,
-                          width: double.maxFinite,
-                          color: AppColor.primaryBackgroundColor,
-                        ),
-                      )
-                    ],
-                  ),
-
-                  Container(
-                    height: 200,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.only(left: 10,right: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipPath(
-                          clipper: OctagonalClipper(),
-                          child: MaterialButton(
-                            onPressed: (){},
-                            color: AppColor.primaryColor,
-                            child: Text(AppString.recieve),
-                          ),
-                        ),
-                        ClipPath(
-                          clipper: OctagonalClipper(),
-                          child: MaterialButton(
-                            onPressed: (){},
-                            color: AppColor.primaryColor,
-                            child: Text(AppString.send),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                  Text("Local",style: TextStyle(color: Colors.blue,fontSize: Theme.of(context).textTheme.displaySmall!.fontSize,fontFamily: 'GaMaamli-Regular'),),
+                  Text(" Share",style: TextStyle(color: Colors.green,fontSize: Theme.of(context).textTheme.displaySmall!.fontSize,fontFamily: 'GaMaamli-Regular'),),
                 ],
               ),
             ),
-          ],
+            Lottie.asset('assets/lotties/Animation.json'),
+
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ClipPath(
+          clipper: OctagonalClipper(),
+          child: MaterialButton(
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (ctx){
+                return const Reciever();
+              }
+              ));
+            },
+            height: 100,
+            minWidth: 200,
+            color: Colors.blue.shade700,
+            child: Text(AppString.recieve,style:  TextStyle(color: Colors.white,fontFamily: 'GaMaamli-Regular',fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize),),
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ClipPath(
+          clipper: OctagonalClipper(),
+          child: MaterialButton(
+            height: 100,
+            minWidth: 200,
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (ctx){
+                return const Send();
+              }
+              ));
+            },
+            color: Colors.green.shade700,
+            child: Text(AppString.send,style:  TextStyle(color: Colors.white,fontFamily: 'GaMaamli-Regular',fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize),),
+          ),
         ),
       ),
 

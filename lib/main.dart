@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:localshare/pages/permission_page.dart';
+import 'package:localshare/pages/get_started.dart';
 
 import 'core/config/string.dart';
 
@@ -15,10 +15,10 @@ class MyApp extends StatelessWidget {
       title: AppString.name,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const PermissionPage(),
+      home: const GetStarted(),
     );
   }
 }

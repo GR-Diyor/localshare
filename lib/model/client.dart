@@ -23,6 +23,7 @@ class ClientModel extends ChangeNotifier{
         isConnected = false;
         recieved = true;
       });
+      //change connect
       isConnected = true;
       notifyListeners();
     }catch(e){

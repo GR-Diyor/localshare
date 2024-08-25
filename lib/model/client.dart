@@ -1,18 +1,44 @@
-class ClientModel {
-  final String deviceName;
-  final String deviceAddress;
-  final bool isGroupOwner;
-  final bool isServiceDiscoveryCapable;
-  final String primaryDeviceType;
-  final String secondaryDeviceType;
-  final int status;
-  const ClientModel({
-    required this.deviceName,
-    required this.deviceAddress,
-    required this.isGroupOwner,
-    required this.isServiceDiscoveryCapable,
-    required this.primaryDeviceType,
-    required this.secondaryDeviceType,
-    required this.status,
-  });
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:localshare/model/server.dart';
+
+class ClientModel extends ChangeNotifier{
+  String? hostName;
+  int? port;
+  Unit8ListCallback? onData;
+  DynamicCallback? onError;
+  ClientModel({required this.onData,this.onError,this.hostName,this.port});
+
+  bool isConnected = false;
+  Socket? socket;
+  bool recieved = false;
+
+  Future<void> connect()async{
+    try {
+      debugPrint(hostName);
+      debugPrint(port!.toString());
+      socket = await Socket.connect(hostName, port!);
+      socket!.listen(onData, onError: onError, onDone: () async {
+        disconnect();
+        isConnected = false;
+        recieved = true;
+      });
+      isConnected = true;
+      notifyListeners();
+    }catch(e){
+      debugPrint(e.toString());
+    }
+  }
+
+  void write(String message)async{
+    if(socket!=null) {
+      socket!.write(message);
+    }
+  }
+  void disconnect(){
+    if(socket!=null){
+      socket!.destroy();
+      isConnected = false;
+    }
+  }
 }
